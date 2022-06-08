@@ -17,6 +17,10 @@ var (
 	DbUser     string
 	DbPassWord string
 	DbName     string
+
+	Cache     string
+	CacheHost string
+	CachePort string
 )
 
 var once sync.Once
@@ -33,6 +37,7 @@ func Load() {
 	}
 	LoadServer(file)
 	LoadData(file)
+	LoadCache(file)
 }
 
 func LoadServer(file *ini.File) {
@@ -48,4 +53,10 @@ func LoadData(file *ini.File) {
 	DbUser = file.Section("database").Key("DbUser").MustString("gostars")
 	DbPassWord = file.Section("database").Key("DbPassWord").MustString("admin123")
 	DbName = file.Section("database").Key("DbName").MustString("gostars")
+}
+
+func LoadCache(file *ini.File) {
+	Cache = file.Section("cache").Key("Cache").MustString("debug")
+	CacheHost = file.Section("cache").Key("CacheHost").MustString("localhost")
+	CachePort = file.Section("cache").Key("CachePort").MustString(":6379")
 }
