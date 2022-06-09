@@ -2,6 +2,7 @@ package models
 
 import (
 	"fmt"
+	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
 	"gostars/utils/code"
 	"time"
@@ -10,11 +11,11 @@ import (
 type User struct {
 	gorm.Model
 	Avatar        string    `json:"avatar"`
-	Username      string    `json:"username"`
-	Password      string    `json:"password"`
+	Username      string    `gorm:"type:varchar(20);not null" json:"username"`
+	Password      string    `gorm:"type:varchar(500);not null" json:"password"`
 	Role          int       `gorm:"default:2" json:"role"`
-	Gender        int       `json:"gender"`
-	Age           int       `json:"age"`
+	Gender        int       `gorm:"type:int;not null" json:"gender"`
+	Age           int       `gorm:"type:int;not null" json:"age"`
 	Birthday      time.Time `json:"birthday"`
 	Email         string    `json:"email"`
 	City          string    `json:"city"`
@@ -40,6 +41,14 @@ func CreateUser(data *User) int {
 }
 
 func CheckUser(username string) int {
+	if username == "" {
+		return code.ERROR
+	}
+	var user User
+	db.Select("username = ?", username).First(&user)
+	if user.ID > 0 {
+		return code.ErrorUsernameUsed
+	}
 	return code.SUCCESS
 }
 
@@ -49,5 +58,22 @@ func GetUser(id int) (User, int) {
 	if err != nil {
 		return user, code.ERROR
 	}
+	return user, code.SUCCESS
+}
+
+func CheckLoginFront(username, password string) (User, int) {
+	var user User
+	var PasswordErr error
+
+	err := db.Table(tableName()).Where("username = ?").First(&user).Error
+	if err != nil {
+		return user, code.ERROR
+	}
+
+	PasswordErr = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password))
+	if PasswordErr != nil {
+		return user, code.ErrorPasswordWrong
+	}
+
 	return user, code.SUCCESS
 }

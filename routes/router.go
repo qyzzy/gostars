@@ -3,6 +3,7 @@ package routes
 import (
 	"github.com/gin-gonic/gin"
 	"gostars/api/v1/web"
+	"gostars/middlewares"
 	"gostars/utils"
 )
 
@@ -12,6 +13,8 @@ func init() {
 	gin.SetMode(utils.AppMode)
 	r = gin.New()
 	r.Use(gin.Recovery())
+	r.Use(middlewares.Cors())
+	r.Use(middlewares.Logger())
 
 	r.GET("/", func(c *gin.Context) {
 		c.HTML(200, "front", nil)
@@ -25,11 +28,14 @@ func init() {
 	{
 		// User info module
 		router.POST("user/add", web.Register)
-		//router.GET("user/:id", web.GetUserInfo)
+		router.GET("user/:id", web.GetMe)
 		//router.GET("users", web.GetUsers)
+
+		router.POST("loginfront", web.Login)
 	}
 
 	auth := r.Group("api/v1")
+	auth.Use(middlewares.JwtToken())
 	{
 		// 用户模块的路由接口
 		auth.GET("admin/users")

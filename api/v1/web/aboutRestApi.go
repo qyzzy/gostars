@@ -12,8 +12,10 @@ func GetMe(c *gin.Context) {
 	id, _ := strconv.Atoi(c.Param("id"))
 	var maps = make(map[string]interface{})
 	data, code := models.GetUser(id)
+
 	maps["username"] = data.Username
 	maps["role"] = data.Role
+
 	c.JSON(
 		http.StatusOK, gin.H{
 			"status":  code,
