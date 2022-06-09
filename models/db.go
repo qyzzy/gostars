@@ -1,4 +1,4 @@
-package database
+package models
 
 import (
 	"fmt"
@@ -36,7 +36,7 @@ func init() {
 
 	db = conn
 
-	db.AutoMigrate()
+	_ = db.AutoMigrate(&User{})
 
 	sqlDB, _ := db.DB()
 
