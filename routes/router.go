@@ -31,7 +31,13 @@ func init() {
 		router.GET("user/:id", web.GetMe)
 		//router.GET("users", web.GetUsers)
 
-		router.POST("loginfront", web.Login)
+		router.POST("loginfront", web.LoginFront)
+
+		// Article info module
+		router.GET("article", web.GetArticles)
+		router.GET("article/:title", web.GetArticlesByTitle)
+		router.GET("article/category/:id", web.GetArticleByCategory)
+		//router.GET("article/info/:id", v1.GetArtInfo)
 	}
 
 	auth := r.Group("api/v1")

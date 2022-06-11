@@ -7,7 +7,7 @@ import (
 	"net/http"
 )
 
-func Login(c *gin.Context) {
+func LoginFront(c *gin.Context) {
 	var formData models.User
 	var code int
 	_ = c.ShouldBindJSON(&formData)

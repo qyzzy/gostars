@@ -11,7 +11,7 @@ import (
 func GetMe(c *gin.Context) {
 	id, _ := strconv.Atoi(c.Param("id"))
 	var maps = make(map[string]interface{})
-	data, code := models.GetUser(id)
+	data, code := models.GetUserByID(id)
 
 	maps["username"] = data.Username
 	maps["role"] = data.Role

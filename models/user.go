@@ -1,7 +1,6 @@
 package models
 
 import (
-	"fmt"
 	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
 	"gostars/utils/code"
@@ -27,15 +26,14 @@ type User struct {
 	Browser       string    `json:"browser"`
 }
 
-func tableName() string {
+func userTableName() string {
 	return "users"
 }
 
 func CreateUser(data *User) int {
-	err := db.Table(tableName()).Create(&data).Error
+	err := db.Table(userTableName()).Create(&data).Error
 	if err != nil {
-		fmt.Println("Create user failed")
-		panic(err)
+		return code.ERROR
 	}
 	return code.SUCCESS
 }
@@ -52,9 +50,9 @@ func CheckUser(username string) int {
 	return code.SUCCESS
 }
 
-func GetUser(id int) (User, int) {
+func GetUserByID(id int) (User, int) {
 	var user User
-	err := db.Table(tableName()).Where("id = ?", id).Limit(1).Find(&user).Error
+	err := db.Table(userTableName()).Where("id = ?", id).Limit(1).Find(&user).Error
 	if err != nil {
 		return user, code.ERROR
 	}
@@ -65,7 +63,7 @@ func CheckLoginFront(username, password string) (User, int) {
 	var user User
 	var PasswordErr error
 
-	err := db.Table(tableName()).Where("username = ?").First(&user).Error
+	err := db.Table(userTableName()).Where("username = ?").First(&user).Error
 	if err != nil {
 		return user, code.ERROR
 	}
