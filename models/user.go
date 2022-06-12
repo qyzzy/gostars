@@ -2,8 +2,10 @@ package models
 
 import (
 	"fmt"
+	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
 	"gostars/utils/code"
+	"log"
 	"time"
 )
 
@@ -75,7 +77,7 @@ func GetUserByID(id int) (User, int) {
 
 func CheckLoginFront(username, password string) (User, int) {
 	var user User
-	//var PasswordErr error
+	var PasswordErr error
 
 	err := db.Table(userTableName()).Where("username = ?", username).First(&user).Error
 
@@ -83,11 +85,34 @@ func CheckLoginFront(username, password string) (User, int) {
 		return user, code.ERROR
 	}
 
-	//PasswordErr = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password))
-	//if PasswordErr != nil {
-	//	return user, code.ErrorPasswordWrong
-	//}
+	PasswordErr = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password))
+	if PasswordErr != nil {
+		return user, code.ErrorPasswordWrong
+	}
 
+	return user, code.SUCCESS
+}
+
+func CheckLogin(username string, password string) (User, int) {
+	var user User
+	var PasswordErr error
+
+	err := db.Table(userTableName()).Where("username = ?", username).First(&user).Error
+	if err != nil {
+		return user, code.SUCCESS
+	}
+
+	PasswordErr = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password))
+
+	if user.ID == 0 {
+		return user, code.ErrorUserNotExist
+	}
+	if PasswordErr != nil {
+		return user, code.ErrorPasswordWrong
+	}
+	if user.Role != 1 {
+		return user, code.ErrorUserNoRight
+	}
 	return user, code.SUCCESS
 }
 
@@ -141,4 +166,28 @@ func DeleteUser(id int) int {
 		return code.ERROR
 	}
 	return code.SUCCESS
+}
+
+// BeforeCreate encrypt
+func (u *User) BeforeCreate(_ *gorm.DB) (err error) {
+	u.Password = ScryptPw(u.Password)
+	u.Role = 2
+	return nil
+}
+
+func (u *User) BeforeUpdate(_ *gorm.DB) (err error) {
+	u.Password = ScryptPw(u.Password)
+	return nil
+}
+
+// Build password
+func ScryptPw(password string) string {
+	const cost = 10
+
+	HashPw, err := bcrypt.GenerateFromPassword([]byte(password), cost)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return string(HashPw)
 }

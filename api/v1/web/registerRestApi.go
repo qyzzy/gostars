@@ -16,6 +16,7 @@ func Register(c *gin.Context) {
 	_ = c.ShouldBindJSON(&data)
 
 	msg, validCode = validator.Validate(&data)
+
 	if validCode != code.SUCCESS {
 		c.JSON(
 			http.StatusOK,

@@ -3,7 +3,7 @@ package main
 import (
 	_ "gostars/cache"
 	_ "gostars/models"
-	_ "gostars/routes"
+	_ "gostars/routers"
 )
 
 func main() {
