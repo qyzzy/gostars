@@ -1,6 +1,7 @@
 package models
 
 import (
+	"fmt"
 	"gorm.io/gorm"
 	"gostars/utils/code"
 )
@@ -27,14 +28,23 @@ func articleTableName() string {
 	return "articles"
 }
 
+func CreateArticle(data *Article) int {
+	err := db.Table(articleTableName()).Create(&data).Error
+	if err != nil {
+		return code.ERROR
+	}
+	return code.SUCCESS
+}
+
 func GetArticles(pageSize, pageNum int) ([]Article, int, int64) {
 	var articleList []Article
 	var err error
 	var total int64
 
-	err = db.Table(articleTableName()).Select("id, title, summary, created_at, update_at, delete_at, content, click_count, status, " +
+	err = db.Table(articleTableName()).Select("id, title, summary, created_at, updated_at, deleted_at, content, click_count, status, " +
 		"is_original, author, open_comment, tag_list, img, comment_count, category_id, category_name").Limit(pageNum).Offset((pageNum - 1) * pageSize).Order("created_at desc").Find(&articleList).Error
 
+	fmt.Println(articleList, err)
 	if err != nil {
 		return articleList, code.ERROR, total
 	}
@@ -49,7 +59,7 @@ func GetArticlesByTitle(title string, pageSize, pageNum int) ([]Article, int, in
 	var err error
 	var total int64
 
-	err = db.Table(articleTableName()).Select("id, title, summary, created_at, update_at, delete_at, content, click_count, status, "+
+	err = db.Table(articleTableName()).Select("id, title, summary, created_at, updated_at, deleted_at, content, click_count, status, "+
 		"is_original, author, open_comment, tag_list, img, comment_count, category_id, "+
 		"category_name").Limit(pageNum).Offset((pageNum-1)*pageSize).Order("created_at desc").Where("title like ?", title+"%").Find(&articleList).Model(&total).Error
 
@@ -65,7 +75,7 @@ func GetArticlesByCategory(id, pageSize, pageNum int) ([]Article, int, int64) {
 	var err error
 	var total int64
 
-	err = db.Table(articleTableName()).Select("id, title, summary, created_at, update_at, delete_at, content, click_count, status, "+
+	err = db.Table(articleTableName()).Select("id, title, summary, created_at, updated_at, deleted_at, content, click_count, status, "+
 		"is_original, author, open_comment, tag_list, img, comment_count, category_id, "+
 		"category_name").Limit(pageNum).Offset((pageNum-1)*pageSize).Order("created_at desc").Where("category_id = ?", id).Find(&articleList).Model(&total).Error
 
@@ -74,4 +84,34 @@ func GetArticlesByCategory(id, pageSize, pageNum int) ([]Article, int, int64) {
 	}
 
 	return articleList, code.SUCCESS, total
+}
+
+func GetArticleClickCount(id int) {
+
+}
+
+func EditArticle(id int, data *Article) int {
+	var article Article
+	var maps = make(map[string]interface{})
+	maps["title"] = data.Title
+	maps["content"] = data.Content
+	maps["img"] = data.Img
+
+	err := db.Table(articleTableName()).Model(&article).Where("id = ? ", id).Updates(&maps).Error
+	if err != nil {
+		return code.ERROR
+	}
+
+	return code.SUCCESS
+}
+
+func DeleteArticle(id int) int {
+	var article Article
+	err := db.Table(articleTableName()).Where("id = ?", id).Delete(&article).Error
+
+	if err != nil {
+		return code.ERROR
+	}
+
+	return code.SUCCESS
 }

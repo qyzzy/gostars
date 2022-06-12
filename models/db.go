@@ -36,7 +36,7 @@ func init() {
 
 	db = conn
 
-	_ = db.AutoMigrate(&User{})
+	_ = db.AutoMigrate(&User{}, &Category{}, &Tag{}, &Article{})
 
 	sqlDB, _ := db.DB()
 
