@@ -35,7 +35,7 @@ func GetArticles(c *gin.Context) {
 func GetArticlesByTitle(c *gin.Context) {
 	pageSize, _ := strconv.Atoi(c.Query("pagesize"))
 	pageNum, _ := strconv.Atoi(c.Query("pagenum"))
-	title := c.Param("title")
+	title := c.Query("title")
 
 	switch {
 	case pageSize >= 100:
