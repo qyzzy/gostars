@@ -3,44 +3,44 @@ package admin
 import (
 	"github.com/gin-gonic/gin"
 	"gostars/models"
-	code2 "gostars/utils/code"
+	"gostars/utils/code"
 	"net/http"
 	"strconv"
 )
 
-func CreateArticle(c *gin.Context) {
+func (articleApi *ArticleApi) CreateArticle(c *gin.Context) {
 	var data models.Article
 	_ = c.ShouldBindJSON(&data)
 
-	code := models.CreateArticle(&data)
+	errCode := adminArticleService.CreateArticle(&data)
 
 	c.JSON(http.StatusOK, gin.H{
-		"status":  code,
+		"status":  errCode,
 		"data":    data,
-		"message": code2.GetErrMsg(code),
+		"message": code.GetErrMsg(errCode),
 	})
 }
 
-func EditArticle(c *gin.Context) {
+func (articleApi *ArticleApi) EditArticle(c *gin.Context) {
 	var data models.Article
 	id, _ := strconv.Atoi(c.Param("id"))
 	_ = c.ShouldBindJSON(&data)
 
-	code := models.EditArticle(id, &data)
+	errCode := adminArticleService.EditArticle(id, &data)
 
 	c.JSON(http.StatusOK, gin.H{
-		"status":  code,
-		"message": code2.GetErrMsg(code),
+		"status":  errCode,
+		"message": code.GetErrMsg(errCode),
 	})
 }
 
-func DeleteArticle(c *gin.Context) {
+func (articleApi *ArticleApi) DeleteArticle(c *gin.Context) {
 	id, _ := strconv.Atoi(c.Param("id"))
 
-	code := models.DeleteArticle(id)
+	errCode := adminArticleService.DeleteArticle(id)
 
 	c.JSON(http.StatusOK, gin.H{
-		"status":  code,
-		"message": code2.GetErrMsg(code),
+		"status":  errCode,
+		"message": code.GetErrMsg(errCode),
 	})
 }

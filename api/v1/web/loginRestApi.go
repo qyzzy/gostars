@@ -10,12 +10,12 @@ import (
 	"time"
 )
 
-func LoginFront(c *gin.Context) {
+func (userApi *UserApi) LoginFront(c *gin.Context) {
 	var formData models.User
 	var errCode int
 	_ = c.ShouldBindJSON(&formData)
 
-	formData, errCode = models.CheckLoginFront(formData.Username, formData.Password)
+	formData, errCode = webUserService.CheckLoginFront(formData.Username, formData.Password)
 
 	c.JSON(http.StatusOK, gin.H{
 		"status":  errCode,
@@ -25,13 +25,13 @@ func LoginFront(c *gin.Context) {
 	})
 }
 
-func Login(c *gin.Context) {
+func (userApi *UserApi) Login(c *gin.Context) {
 	var formData models.User
 	_ = c.ShouldBindJSON(&formData)
 	var token string
 	var errCode int
 
-	formData, errCode = models.CheckLogin(formData.Username, formData.Password)
+	formData, errCode = webUserService.CheckLogin(formData.Username, formData.Password)
 
 	if errCode == code.SUCCESS {
 		setToken(c, formData)

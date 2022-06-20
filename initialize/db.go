@@ -1,4 +1,4 @@
-package models
+package initialize
 
 import (
 	"fmt"
@@ -6,11 +6,11 @@ import (
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 	"gorm.io/gorm/schema"
+	"gostars/global"
+	"gostars/models"
 	"gostars/utils"
 	"time"
 )
-
-var db *gorm.DB
 
 func init() {
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local",
@@ -34,11 +34,17 @@ func init() {
 		fmt.Println("Connect database failed")
 	}
 
-	db = conn
+	global.GDb = conn
 
-	_ = db.AutoMigrate(&User{}, &Category{}, &Tag{}, &Article{}, &Comment{})
+	_ = global.GDb.AutoMigrate(
+		&models.User{},
+		&models.Category{},
+		&models.Tag{},
+		&models.Article{},
+		&models.Comment{},
+	)
 
-	sqlDB, _ := db.DB()
+	sqlDB, _ := global.GDb.DB()
 
 	sqlDB.SetMaxIdleConns(10)
 

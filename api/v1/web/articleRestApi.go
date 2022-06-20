@@ -2,13 +2,12 @@ package web
 
 import (
 	"github.com/gin-gonic/gin"
-	"gostars/models"
-	code2 "gostars/utils/code"
+	"gostars/utils/code"
 	"net/http"
 	"strconv"
 )
 
-func GetArticles(c *gin.Context) {
+func (articleApi *ArticleApi) GetArticles(c *gin.Context) {
 	pageSize, _ := strconv.Atoi(c.Query("pagesize"))
 	pageNum, _ := strconv.Atoi(c.Query("pagenum"))
 
@@ -23,16 +22,16 @@ func GetArticles(c *gin.Context) {
 		pageNum = 1
 	}
 
-	data, code, total := models.GetArticles(pageSize, pageNum)
+	data, errCode, total := webArticleService.GetArticles(pageSize, pageNum)
 	c.JSON(http.StatusOK, gin.H{
-		"status":  code,
+		"status":  errCode,
 		"data":    data,
 		"total":   total,
-		"message": code2.GetErrMsg(code),
+		"message": code.GetErrMsg(errCode),
 	})
 }
 
-func GetArticlesByTitle(c *gin.Context) {
+func (articleApi *ArticleApi) GetArticlesByTitle(c *gin.Context) {
 	pageSize, _ := strconv.Atoi(c.Query("pagesize"))
 	pageNum, _ := strconv.Atoi(c.Query("pagenum"))
 	title := c.Query("title")
@@ -49,26 +48,26 @@ func GetArticlesByTitle(c *gin.Context) {
 	}
 
 	if len(title) == 0 {
-		data, code, total := models.GetArticles(pageSize, pageNum)
+		data, errCode, total := webArticleService.GetArticles(pageSize, pageNum)
 		c.JSON(http.StatusOK, gin.H{
-			"status":  code,
+			"status":  errCode,
 			"data":    data,
 			"total":   total,
-			"message": code2.GetErrMsg(code),
+			"message": code.GetErrMsg(errCode),
 		})
 		return
 	}
 
-	data, code, total := models.GetArticlesByTitle(title, pageSize, pageNum)
+	data, errCode, total := webArticleService.GetArticlesByTitle(title, pageSize, pageNum)
 	c.JSON(http.StatusOK, gin.H{
-		"status":  code,
+		"status":  errCode,
 		"data":    data,
 		"total":   total,
-		"message": code2.GetErrMsg(code),
+		"message": code.GetErrMsg(errCode),
 	})
 }
 
-func GetArticleByCategory(c *gin.Context) {
+func (articleApi *ArticleApi) GetArticleByCategory(c *gin.Context) {
 	pageSize, _ := strconv.Atoi(c.Query("pagesize"))
 	pageNum, _ := strconv.Atoi(c.Query("pagenum"))
 	id, _ := strconv.Atoi(c.Param("id"))
@@ -84,12 +83,12 @@ func GetArticleByCategory(c *gin.Context) {
 		pageNum = 1
 	}
 
-	data, code, total := models.GetArticlesByCategory(id, pageSize, pageNum)
+	data, errCode, total := webArticleService.GetArticlesByCategory(id, pageSize, pageNum)
 
 	c.JSON(http.StatusOK, gin.H{
-		"status":  code,
+		"status":  errCode,
 		"data":    data,
 		"total":   total,
-		"message": code2.GetErrMsg(code),
+		"message": code.GetErrMsg(errCode),
 	})
 }

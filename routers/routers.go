@@ -2,12 +2,11 @@ package routers
 
 import (
 	"github.com/gin-gonic/gin"
+	"gostars/global"
 	"gostars/middlewares"
 	"gostars/utils"
 	"time"
 )
-
-var r *gin.Engine
 
 func init() {
 	initRouter()
@@ -15,26 +14,27 @@ func init() {
 
 func initRouter() {
 	gin.SetMode(utils.AppMode)
-	r = gin.New()
+	global.GRouter = gin.New()
 
-	r.Use(gin.Recovery())
-	r.Use(middlewares.Cors())
-	r.Use(middlewares.Logger())
-	r.Use(middlewares.RateLimit(time.Second, 100, 100))
+	global.GRouter.Use(gin.Recovery())
+	global.GRouter.Use(middlewares.Cors())
+	global.GRouter.Use(middlewares.Logger())
+	global.GRouter.Use(middlewares.RateLimit(time.Second, 100, 100))
 
 	enterGroup := &RouterGroup{}
 	adminRouter := enterGroup.Admin
 	userRouter := enterGroup.User
 
-	publicGroup := r.Group("api/v1")
+	publicGroup := global.GRouter.Group("api/v1")
 	{
 		userRouter.InitUserRouter(publicGroup)
 	}
 
-	privateGroup := r.Group("api/v1")
+	privateGroup := global.GRouter.Group("api/v1")
 	{
 		adminRouter.InitAdminRouter(privateGroup)
+		adminRouter.InitLoggerRouter(privateGroup)
 	}
 
-	_ = r.Run(utils.HttpPort)
+	_ = global.GRouter.Run(utils.HttpPort)
 }

@@ -8,7 +8,7 @@ import (
 	"net/http"
 )
 
-func Register(c *gin.Context) {
+func (userApi *UserApi) Register(c *gin.Context) {
 	var data models.User
 	var msg string
 	var validCode int
@@ -29,16 +29,13 @@ func Register(c *gin.Context) {
 		return
 	}
 
-	validCode = models.CheckUser(data.Username)
-	if validCode == code.SUCCESS {
-		models.CreateUser(&data)
-	}
+	errCode := webUserService.Register(&data)
 
 	c.JSON(
 		http.StatusOK,
 		gin.H{
-			"status":  validCode,
-			"message": code.GetErrMsg(validCode),
+			"status":  errCode,
+			"message": code.GetErrMsg(errCode),
 		},
 	)
 }

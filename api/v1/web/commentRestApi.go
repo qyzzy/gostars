@@ -8,11 +8,11 @@ import (
 	"strconv"
 )
 
-func CreateComment(c *gin.Context) {
+func (commentApi *CommentApi) CreateComment(c *gin.Context) {
 	var data models.Comment
 	_ = c.ShouldBindJSON(&data)
 
-	errCode := models.CreateComment(&data)
+	errCode := webCommentService.CreateComment(&data)
 	c.JSON(http.StatusOK, gin.H{
 		"status":  errCode,
 		"data":    data,
@@ -20,9 +20,9 @@ func CreateComment(c *gin.Context) {
 	})
 }
 
-func GetArticleComments(c *gin.Context) {
+func (commentApi *CommentApi) GetArticleComments(c *gin.Context) {
 	articleID, _ := strconv.Atoi(c.Param("id"))
-	data, errCode := models.GetArticleComments(articleID)
+	data, errCode := webCommentService.GetArticleComments(articleID)
 	c.JSON(http.StatusOK, gin.H{
 		"status":  errCode,
 		"data":    data,
@@ -30,9 +30,9 @@ func GetArticleComments(c *gin.Context) {
 	})
 }
 
-func DeleteComment(c *gin.Context) {
+func (commentApi *CommentApi) DeleteComment(c *gin.Context) {
 	id, _ := strconv.Atoi(c.Param("id"))
-	errCode := models.DeleteComment(uint(id))
+	errCode := webCommentService.DeleteComment(uint(id))
 	c.JSON(http.StatusOK, gin.H{
 		"status":  errCode,
 		"message": code.GetErrMsg(errCode),

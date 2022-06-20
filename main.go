@@ -1,8 +1,7 @@
 package main
 
 import (
-	_ "gostars/cache"
-	_ "gostars/models"
+	_ "gostars/initialize"
 	_ "gostars/routers"
 )
 

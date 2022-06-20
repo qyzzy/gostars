@@ -2,7 +2,6 @@ package admin
 
 import (
 	"github.com/gin-gonic/gin"
-	"gostars/api/v1/admin"
 	"gostars/middlewares"
 )
 
@@ -13,15 +12,15 @@ func (s *AdminRouterGroup) InitAdminRouter(Router *gin.RouterGroup) {
 	adminRouter := Router.Group("admin").Use(middlewares.JwtToken())
 	{
 		// 用户模块的路由接口
-		adminRouter.GET("users", admin.GetUsers)
-		adminRouter.GET("users/:username", admin.GetUsersByName)
-		adminRouter.PUT("users/:id", admin.EditUser)
-		adminRouter.DELETE("users/:id", admin.DeleteUser)
+		adminRouter.GET("users", adminApiGroup.GetUsers)
+		adminRouter.GET("users/:username", adminApiGroup.GetUsersByName)
+		adminRouter.PUT("users/:id", adminApiGroup.EditUser)
+		adminRouter.DELETE("users/:id", adminApiGroup.DeleteUser)
 
-		adminRouter.POST("categories", admin.CreateCategory)
+		adminRouter.POST("categories", adminApiGroup.CreateCategory)
 
-		adminRouter.POST("articles", admin.CreateArticle)
-		adminRouter.PUT("articles/:id", admin.EditArticle)
-		adminRouter.DELETE("articles/:id", admin.DeleteArticle)
+		adminRouter.POST("articles", adminApiGroup.CreateArticle)
+		adminRouter.PUT("articles/:id", adminApiGroup.EditArticle)
+		adminRouter.DELETE("articles/:id", adminApiGroup.DeleteArticle)
 	}
 }
