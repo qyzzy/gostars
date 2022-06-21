@@ -3,9 +3,9 @@ package web
 import (
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
-	"gostars/middlewares"
 	"gostars/models"
 	"gostars/utils/code"
+	jwttoken "gostars/utils/jwt"
 	"net/http"
 	"time"
 )
@@ -30,17 +30,38 @@ func (userApi *UserApi) Login(c *gin.Context) {
 	_ = c.ShouldBindJSON(&formData)
 	var token string
 	var errCode int
+	var loginErrCode int
 
-	formData, errCode = webUserService.CheckLogin(formData.Username, formData.Password)
+	formData, loginErrCode = webUserService.CheckLogin(formData.Username, formData.Password)
+
+	errCode, token = webJwtService.GetRedisJwt(formData.Username)
+	if !webJwtService.IsBlacklist(token) {
+		c.JSON(http.StatusOK, gin.H{
+			"status":  code.ErrorJwtInBlacklist,
+			"message": code.GetErrMsg(code.ErrorJwtInBlacklist),
+		})
+		return
+	}
 
 	if errCode == code.SUCCESS {
+		c.JSON(http.StatusOK, gin.H{
+			"status":  code.SUCCESS,
+			"data":    formData.Username,
+			"id":      formData.ID,
+			"message": code.GetErrMsg(code.SUCCESS),
+			"token":   token,
+		})
+		return
+	}
+
+	if loginErrCode == code.SUCCESS {
 		setToken(c, formData)
 	} else {
 		c.JSON(http.StatusOK, gin.H{
-			"status":  errCode,
+			"status":  loginErrCode,
 			"data":    formData.Username,
 			"id":      formData.ID,
-			"message": code.GetErrMsg(errCode),
+			"message": code.GetErrMsg(loginErrCode),
 			"token":   token,
 		})
 	}
@@ -48,28 +69,37 @@ func (userApi *UserApi) Login(c *gin.Context) {
 }
 
 func setToken(c *gin.Context, user models.User) {
-	j := middlewares.NewJwt()
-	claims := middlewares.MyClaims{
+	j := jwttoken.NewJwt()
+	claims := jwttoken.MyClaims{
 		Username: user.Username,
 		StandardClaims: jwt.StandardClaims{
 			NotBefore: time.Now().Unix() - 100,
-			ExpiresAt: time.Now().Unix() + 7200,
+			ExpiresAt: time.Now().Unix() + 6000,
 			Issuer:    "GoStars",
 		},
 	}
 
 	token, err := j.CreateToken(claims)
 
+	errCode := webJwtService.SetRedisJwt(token, user.Username)
+	if errCode != code.SUCCESS {
+		c.JSON(http.StatusOK, gin.H{
+			"status":  code.ErrorRedisSaveFailed,
+			"message": code.GetErrMsg(code.ErrorRedisSaveFailed),
+		})
+		return
+	}
+
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{
-			"status":  code.ERROR,
+			"status":  code.ErrorJwtCreateFailed,
 			"message": code.GetErrMsg(code.ERROR),
-			"token":   token,
 		})
+		return
 	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"status":  200,
+		"status":  code.SUCCESS,
 		"data":    user.Username,
 		"id":      user.ID,
 		"message": code.GetErrMsg(200),

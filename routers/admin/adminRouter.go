@@ -11,7 +11,7 @@ type AdminRouterGroup struct {
 func (s *AdminRouterGroup) InitAdminRouter(Router *gin.RouterGroup) {
 	adminRouter := Router.Group("admin").Use(middlewares.JwtToken())
 	{
-		// 用户模块的路由接口
+		// user module
 		adminRouter.GET("users", adminApiGroup.GetUsers)
 		adminRouter.GET("users/:username", adminApiGroup.GetUsersByName)
 		adminRouter.PUT("users/:id", adminApiGroup.EditUser)

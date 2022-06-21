@@ -26,4 +26,5 @@ var (
 	webArticleService  = new(service.ArticleService)
 	webCategoryService = new(service.CategoryService)
 	webCommentService  = new(service.CommentService)
+	webJwtService      = new(service.JwtService)
 )

@@ -20,22 +20,34 @@ const (
 	// Category module errors
 	ErrorCategoryNameUsed = 3001
 	ErrorCategoryNotExist = 3002
+
+	ErrorRedisGetFailed    = 6001
+	ErrorRedisSaveFailed   = 6002
+	ErrorRedisDeleteFailed = 6003
+
+	ErrorJwtCreateFailed = 7001
+	ErrorJwtInBlacklist  = 7002
 )
 
 var codeMsg = map[int]string{
-	SUCCESS:               "OK",
-	ERROR:                 "FAIL",
-	ErrorUsernameUsed:     "Username is already in use!",
-	ErrorPasswordWrong:    "Wrong password!",
-	ErrorUserNotExist:     "User does not exist!",
-	ErrorTokenExist:       "Token does not exist!",
-	ErrorTokenRuntime:     "Token expired!",
-	ErrorTokenWrong:       "Wrong token!",
-	ErrorTokenTypeWrong:   "Wrong token format!",
-	ErrorUserNoRight:      "No permission!",
-	ErrorArticleNotExist:  "Article not exist!",
-	ErrorCategoryNameUsed: "Category name is already in use!",
-	ErrorCategoryNotExist: "Category not exist!",
+	SUCCESS:                "OK",
+	ERROR:                  "FAIL",
+	ErrorUsernameUsed:      "Username is already in use!",
+	ErrorPasswordWrong:     "Wrong password!",
+	ErrorUserNotExist:      "User does not exist!",
+	ErrorTokenExist:        "Token does not exist!",
+	ErrorTokenRuntime:      "Token expired!",
+	ErrorTokenWrong:        "Wrong token!",
+	ErrorTokenTypeWrong:    "Wrong token format!",
+	ErrorUserNoRight:       "No permission!",
+	ErrorArticleNotExist:   "Article not exist!",
+	ErrorCategoryNameUsed:  "Category name is already in use!",
+	ErrorCategoryNotExist:  "Category not exist!",
+	ErrorRedisGetFailed:    "Redis get failed!",
+	ErrorRedisSaveFailed:   "Redis save failed!",
+	ErrorRedisDeleteFailed: "Redis delete failed!",
+	ErrorJwtCreateFailed:   "Jwt create failed!",
+	ErrorJwtInBlacklist:    "Jwt in blacklist!",
 }
 
 func GetErrMsg(code int) string {

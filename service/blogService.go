@@ -7,7 +7,6 @@ import (
 )
 
 type ArticleService struct {
-
 }
 
 func (articleService *ArticleService) CreateArticle(data *models.Article) int {
@@ -26,7 +25,7 @@ func (articleService *ArticleService) GetArticles(pageSize, pageNum int) ([]mode
 
 	err = global.GDb.Table(models.ArticleTableName()).
 		Select("id, title, summary, created_at, updated_at, deleted_at, content, click_count, status, " +
-		"is_original, author, open_comment, tag_list, img, comment_count, category_id, category_name").
+			"is_original, author, open_comment, tag_list, img, comment_count, category_id, category_name").
 		Limit(pageNum).Offset((pageNum - 1) * pageSize).Order("created_at desc").Find(&articleList).Error
 
 	if err != nil {
@@ -45,8 +44,8 @@ func (articleService *ArticleService) GetArticlesByTitle(title string, pageSize,
 
 	err = global.GDb.Table(models.ArticleTableName()).
 		Select("id, title, summary, created_at, updated_at, deleted_at, content, click_count, status, "+
-		"is_original, author, open_comment, tag_list, img, comment_count, category_id, "+
-		"category_name").
+			"is_original, author, open_comment, tag_list, img, comment_count, category_id, "+
+			"category_name").
 		Limit(pageNum).Offset((pageNum-1)*pageSize).Order("created_at desc").
 		Where("title like ?", title+"%").Find(&articleList).Model(&total).Error
 
@@ -64,8 +63,8 @@ func (articleService *ArticleService) GetArticlesByCategory(id, pageSize, pageNu
 
 	err = global.GDb.Table(models.ArticleTableName()).
 		Select("id, title, summary, created_at, updated_at, deleted_at, content, click_count, status, "+
-		"is_original, author, open_comment, tag_list, img, comment_count, category_id, "+
-		"category_name").
+			"is_original, author, open_comment, tag_list, img, comment_count, category_id, "+
+			"category_name").
 		Limit(pageNum).Offset((pageNum-1)*pageSize).Order("created_at desc").
 		Where("category_id = ?", id).Find(&articleList).Model(&total).Error
 
