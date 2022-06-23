@@ -27,6 +27,8 @@ const (
 
 	ErrorJwtCreateFailed = 7001
 	ErrorJwtInBlacklist  = 7002
+
+	ErrorImageCreateFailed = 8001
 )
 
 var codeMsg = map[int]string{
@@ -48,6 +50,7 @@ var codeMsg = map[int]string{
 	ErrorRedisDeleteFailed: "Redis delete failed!",
 	ErrorJwtCreateFailed:   "Jwt create failed!",
 	ErrorJwtInBlacklist:    "Jwt in blacklist!",
+	ErrorImageCreateFailed: "Image create failed",
 }
 
 func GetErrMsg(code int) string {

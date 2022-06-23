@@ -6,6 +6,7 @@ type RouterGroup struct {
 	AdminRouterGroup
 	LoggerRouterGroup
 	JwtRouterGroup
+	UploadRouterGroup
 }
 
 var adminApiGroup admin.ApiGroup

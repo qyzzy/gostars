@@ -35,6 +35,7 @@ func initRouter() {
 		adminRouter.InitAdminRouter(privateGroup)
 		adminRouter.InitLoggerRouter(privateGroup)
 		adminRouter.InitJwtRouter(privateGroup)
+		adminRouter.InitUploadRouter(privateGroup)
 	}
 
 	_ = global.GRouter.Run(utils.HttpPort)

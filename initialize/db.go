@@ -15,7 +15,7 @@ import (
 func init() {
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local",
 		utils.DbUser,
-		utils.DbPassWord,
+		utils.DbPassword,
 		utils.DbHost,
 		utils.DbPort,
 		utils.DbName,
@@ -43,6 +43,7 @@ func init() {
 		&models.Article{},
 		&models.Comment{},
 		&models.JwtBlacklist{},
+		&models.Image{},
 	)
 
 	sqlDB, _ := global.GDb.DB()

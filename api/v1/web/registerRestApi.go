@@ -1,6 +1,7 @@
 package web
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"gostars/models"
 	"gostars/utils/code"
@@ -17,6 +18,7 @@ func (userApi *UserApi) Register(c *gin.Context) {
 
 	msg, validCode = validator.Validate(&data)
 
+	fmt.Println(msg)
 	if validCode != code.SUCCESS {
 		c.JSON(
 			http.StatusOK,

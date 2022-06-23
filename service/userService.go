@@ -20,7 +20,8 @@ func (userService *UserService) Register(data *models.User) int {
 	}
 	// generate uuid
 	data.UUID = uuid.NewV4()
-	err := global.GDb.Table(models.UserTableName()).Create(&data).Error
+	err := global.GDb.Table(models.UserTableName()).
+		Create(&data).Error
 	if err != nil {
 		return code.ERROR
 	}
@@ -32,9 +33,15 @@ func (userService *UserService) CheckUser(username string) int {
 		return code.ERROR
 	}
 	var user *models.User
+
 	err := global.GDb.Table(models.UserTableName()).
-		Select("id").Where("username = ?", username).First(&user)
+		Select("id").Where("username = ?", username).
+		First(&user).Error
+
 	if err != nil {
+		if err.Error() == "record not found" {
+			return code.SUCCESS
+		}
 		return code.ERROR
 	}
 	if user.ID > 0 {

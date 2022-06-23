@@ -8,6 +8,8 @@ type ApiGroup struct {
 	CommentApi
 	CategoryApi
 	JwtApi
+	LoggerApi
+	UploadApi
 }
 
 type UserApi struct {
@@ -25,7 +27,10 @@ type CategoryApi struct {
 type JwtApi struct {
 }
 
-type Logger struct {
+type LoggerApi struct {
+}
+
+type UploadApi struct {
 }
 
 var (
@@ -34,4 +39,5 @@ var (
 	adminCommentService  = new(service.CommentService)
 	adminCategoryService = new(service.CategoryService)
 	adminJwtService      = new(service.JwtService)
+	adminImageService    = new(service.ImageService)
 )

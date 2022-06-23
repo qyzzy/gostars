@@ -1,6 +1,7 @@
 package web
 
 import (
+	"fmt"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 	"gostars/models"
@@ -32,6 +33,7 @@ func (userApi *UserApi) Login(c *gin.Context) {
 	var errCode int
 	var loginErrCode int
 
+	fmt.Println(c.Request.RemoteAddr)
 	formData, loginErrCode = webUserService.CheckLogin(formData.Username, formData.Password)
 
 	errCode, token = webJwtService.GetRedisJwt(formData.Username)
@@ -48,6 +50,7 @@ func (userApi *UserApi) Login(c *gin.Context) {
 			"status":  code.SUCCESS,
 			"data":    formData.Username,
 			"id":      formData.ID,
+			"role":    formData.Role,
 			"message": code.GetErrMsg(code.SUCCESS),
 			"token":   token,
 		})
