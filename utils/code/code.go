@@ -5,14 +5,16 @@ const (
 	ERROR   = 500
 
 	// User module errors
-	ErrorUsernameUsed   = 1001
-	ErrorPasswordWrong  = 1002
-	ErrorUserNotExist   = 1003
-	ErrorTokenExist     = 1004
-	ErrorTokenRuntime   = 1005
-	ErrorTokenWrong     = 1006
-	ErrorTokenTypeWrong = 1007
-	ErrorUserNoRight    = 1008
+	ErrorUsernameUsed      = 1001
+	ErrorPasswordWrong     = 1002
+	ErrorUserNotExist      = 1003
+	ErrorTokenExist        = 1004
+	ErrorTokenRuntime      = 1005
+	ErrorTokenWrong        = 1006
+	ErrorTokenTypeWrong    = 1007
+	ErrorUserNoRight       = 1008
+	ErrorTokenCreateFailed = 1009
+	ErrorTokenInBlacklist  = 1010
 
 	// Article module errors
 	ErrorArticleNotExist = 2001
@@ -24,9 +26,6 @@ const (
 	ErrorRedisGetFailed    = 6001
 	ErrorRedisSaveFailed   = 6002
 	ErrorRedisDeleteFailed = 6003
-
-	ErrorJwtCreateFailed = 7001
-	ErrorJwtInBlacklist  = 7002
 
 	ErrorImageCreateFailed = 8001
 )
@@ -48,8 +47,8 @@ var codeMsg = map[int]string{
 	ErrorRedisGetFailed:    "Redis get failed!",
 	ErrorRedisSaveFailed:   "Redis save failed!",
 	ErrorRedisDeleteFailed: "Redis delete failed!",
-	ErrorJwtCreateFailed:   "Jwt create failed!",
-	ErrorJwtInBlacklist:    "Jwt in blacklist!",
+	ErrorTokenCreateFailed: "Token create failed!",
+	ErrorTokenInBlacklist:  "Token in blacklist!",
 	ErrorImageCreateFailed: "Image create failed",
 }
 

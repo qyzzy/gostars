@@ -2,14 +2,13 @@ package admin
 
 import (
 	"github.com/gin-gonic/gin"
-	"gostars/middlewares"
 )
 
 type AdminRouterGroup struct {
 }
 
 func (s *AdminRouterGroup) InitAdminRouter(Router *gin.RouterGroup) {
-	adminRouter := Router.Group("admin").Use(middlewares.JwtToken())
+	adminRouter := Router.Group("")
 	{
 		// user module
 		adminRouter.GET("users", adminApiGroup.GetUsers)

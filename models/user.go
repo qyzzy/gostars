@@ -14,6 +14,7 @@ type User struct {
 	Avatar        string    `json:"avatar"`
 	Username      string    `gorm:"type:varchar(20);not null" json:"username"`
 	Password      string    `gorm:"type:varchar(500);not null" json:"password"`
+	AuthorityID   string    `gorm:"not null;size:90" json:"authorityid"`
 	Role          int       `gorm:"default:2" json:"role"`
 	Gender        int       `gorm:"type:int;not null" json:"gender"`
 	Age           int       `gorm:"type:int;not null" json:"age"`

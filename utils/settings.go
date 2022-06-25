@@ -37,6 +37,9 @@ var (
 	RabbitMQPassword string
 	RabbitMQAddress  string
 	RabbitMQPort     string
+
+	ModelPath  string
+	PolicyPath string
 )
 
 var once sync.Once
@@ -57,6 +60,7 @@ func Load() {
 	LoadFtp(file)
 	LoadQiNiu(file)
 	LoadRabbitMQ(file)
+	LoadCasbin(file)
 }
 
 func LoadServer(file *ini.File) {
@@ -100,4 +104,9 @@ func LoadRabbitMQ(file *ini.File) {
 	RabbitMQPassword = file.Section("rabbitmq").Key("RabbitMQPassword").MustString("")
 	RabbitMQAddress = file.Section("rabbitmq").Key("RabbitMQAddress").MustString("")
 	RabbitMQPort = file.Section("rabbitmq").Key("RabbitMQPort").MustString("")
+}
+
+func LoadCasbin(file *ini.File) {
+	ModelPath = file.Section("casbin").Key("ModelPath").MustString("")
+	PolicyPath = file.Section("casbin").Key("PolicyPath").MustString("")
 }

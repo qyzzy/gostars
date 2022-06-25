@@ -7,6 +7,7 @@ import (
 	"gorm.io/gorm/logger"
 	"gorm.io/gorm/schema"
 	"gostars/global"
+	"gostars/initialize/base"
 	"gostars/models"
 	"gostars/utils"
 	"time"
@@ -53,4 +54,7 @@ func init() {
 	sqlDB.SetMaxOpenConns(100)
 
 	sqlDB.SetConnMaxLifetime(10 * time.Second)
+
+	_ = base.Casbin.InitCasbinRule()
+	_ = base.Authority.InitAuthority()
 }

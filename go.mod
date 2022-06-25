@@ -3,6 +3,8 @@ module gostars
 go 1.16
 
 require (
+	github.com/casbin/casbin/v2 v2.47.3
+	github.com/casbin/gorm-adapter/v3 v3.7.2
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/dutchcoders/goftp v0.0.0-20170301105846-ed59a591ce14
 	github.com/gin-contrib/cors v1.3.1
@@ -21,7 +23,7 @@ require (
 	github.com/sirupsen/logrus v1.8.1
 	github.com/streadway/amqp v1.0.0
 	github.com/stretchr/testify v1.7.2 // indirect
-	golang.org/x/crypto v0.0.0-20210921155107-089bfa567519
+	golang.org/x/crypto v0.0.0-20220411220226-7b82a4e95df4
 	gopkg.in/ini.v1 v1.66.6
 	gorm.io/driver/mysql v1.3.4
 	gorm.io/gorm v1.23.5

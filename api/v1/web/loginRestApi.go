@@ -37,10 +37,11 @@ func (userApi *UserApi) Login(c *gin.Context) {
 	formData, loginErrCode = webUserService.CheckLogin(formData.Username, formData.Password)
 
 	errCode, token = webJwtService.GetRedisJwt(formData.Username)
+	// judge jwt token in blacklist
 	if !webJwtService.IsBlacklist(token) {
 		c.JSON(http.StatusOK, gin.H{
-			"status":  code.ErrorJwtInBlacklist,
-			"message": code.GetErrMsg(code.ErrorJwtInBlacklist),
+			"status":  code.ErrorTokenInBlacklist,
+			"message": code.GetErrMsg(code.ErrorTokenInBlacklist),
 		})
 		return
 	}
@@ -84,6 +85,7 @@ func setToken(c *gin.Context, user models.User) {
 
 	token, err := j.CreateToken(claims)
 
+	// save jwt token to redis
 	errCode := webJwtService.SetRedisJwt(token, user.Username)
 	if errCode != code.SUCCESS {
 		c.JSON(http.StatusOK, gin.H{
@@ -95,7 +97,7 @@ func setToken(c *gin.Context, user models.User) {
 
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{
-			"status":  code.ErrorJwtCreateFailed,
+			"status":  code.ErrorTokenCreateFailed,
 			"message": code.GetErrMsg(code.ERROR),
 		})
 		return

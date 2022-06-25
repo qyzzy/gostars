@@ -16,6 +16,7 @@ func initRouter() {
 	gin.SetMode(utils.AppMode)
 	global.GRouter = gin.New()
 
+	global.GRouter.Use(middlewares.CasbinHandler())
 	global.GRouter.Use(gin.Recovery())
 	global.GRouter.Use(middlewares.Cors())
 	global.GRouter.Use(middlewares.Logger())
@@ -30,12 +31,14 @@ func initRouter() {
 		userRouter.InitUserRouter(publicGroup)
 	}
 
-	privateGroup := global.GRouter.Group("api/v1")
+	privateGroup := global.GRouter.Group("api/v1/admin")
+	privateGroup.Use(middlewares.JwtToken())
 	{
 		adminRouter.InitAdminRouter(privateGroup)
 		adminRouter.InitLoggerRouter(privateGroup)
 		adminRouter.InitJwtRouter(privateGroup)
 		adminRouter.InitUploadRouter(privateGroup)
+		adminRouter.InitCasbinRouter(privateGroup)
 	}
 
 	_ = global.GRouter.Run(utils.HttpPort)
