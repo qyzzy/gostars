@@ -42,6 +42,11 @@ var (
 	PolicyPath string
 )
 
+const (
+	IsLike = 0
+	UnLike = 1
+)
+
 var once sync.Once
 
 func init() {

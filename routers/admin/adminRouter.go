@@ -18,6 +18,7 @@ func (s *AdminRouterGroup) InitAdminRouter(Router *gin.RouterGroup) {
 
 		adminRouter.POST("categories", adminApiGroup.CreateCategory)
 
+		adminRouter.GET("articles")
 		adminRouter.POST("articles", adminApiGroup.CreateArticle)
 		adminRouter.PUT("articles/:id", adminApiGroup.EditArticle)
 		adminRouter.DELETE("articles/:id", adminApiGroup.DeleteArticle)

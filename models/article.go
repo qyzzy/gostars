@@ -14,12 +14,14 @@ type Article struct {
 	AdminID      int    `gorm:"type:int;not null" json:"adminid"`
 	IsOriginal   int    `gorm:"type:int;not null" json:"isoriginal"`
 	Author       string `gorm:"type:varchar(100);not null" json:"author"`
+	AuthorID     int    `gorm:"type:int;not null" json:"authorid"`
 	OpenComment  bool   `gorm:"type:tinyint;not null;default:0" json:"clickcount"`
 	TagList      []Tag  `gorm:"type:text" json:"tagList"`
 	Img          string `gorm:"type:varchar(100);not null" json:"img"`
 	CommentCount int    `gorm:"type:int;not null" json:"commentcount"`
 	CategoryID   int    `gorm:"type:int;not null" json:"categoryid"`
 	CategoryName string `gorm:"type:varchar(50)" json:"categoryname"`
+	LikeCount    int    `gorm:"type:int;not null" json:"likecount"`
 }
 
 func ArticleTableName() string {

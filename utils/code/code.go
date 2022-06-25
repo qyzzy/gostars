@@ -17,7 +17,8 @@ const (
 	ErrorTokenInBlacklist  = 1010
 
 	// Article module errors
-	ErrorArticleNotExist = 2001
+	ErrorArticleNotExist   = 2001
+	ErrorLikeArticleFailed = 2002
 
 	// Category module errors
 	ErrorCategoryNameUsed = 3001
@@ -28,6 +29,8 @@ const (
 	ErrorRedisDeleteFailed = 6003
 
 	ErrorImageCreateFailed = 8001
+
+	ErrorDataNotFound = 53011
 )
 
 var codeMsg = map[int]string{
@@ -50,6 +53,7 @@ var codeMsg = map[int]string{
 	ErrorTokenCreateFailed: "Token create failed!",
 	ErrorTokenInBlacklist:  "Token in blacklist!",
 	ErrorImageCreateFailed: "Image create failed",
+	ErrorDataNotFound:      "Data could not found",
 }
 
 func GetErrMsg(code int) string {

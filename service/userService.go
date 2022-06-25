@@ -20,6 +20,7 @@ func (userService *UserService) Register(data *models.User) int {
 	}
 	// generate uuid
 	data.UUID = uuid.NewV4()
+	data.AuthorityID = "777"
 	err := global.GDb.Table(models.UserTableName()).
 		Create(&data).Error
 	if err != nil {
@@ -28,6 +29,7 @@ func (userService *UserService) Register(data *models.User) int {
 	return code.SUCCESS
 }
 
+// check username
 func (userService *UserService) CheckUser(username string) int {
 	if username == "" {
 		return code.ERROR

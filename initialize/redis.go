@@ -11,6 +11,7 @@ import (
 func init() {
 	client := redis.NewClient(&redis.Options{
 		Addr: utils.CacheHost + utils.CachePort,
+		DB:   0,
 	})
 	_, err := client.Ping(context.Background()).Result()
 	if err != nil {
