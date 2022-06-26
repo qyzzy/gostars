@@ -31,7 +31,7 @@ func (jwtService *JwtService) IsBlacklist(jwt string) bool {
 }
 
 func (jwtService *JwtService) GetRedisJwt(username string) (errCode int, redisJwt string) {
-	redisJwt, err := global.GRedis.Get(context.Background(), username).Result()
+	redisJwt, err := global.GRedisGroup[0].Get(context.Background(), username).Result()
 	if err != nil {
 		return code.ErrorRedisGetFailed, redisJwt
 	}
@@ -40,9 +40,17 @@ func (jwtService *JwtService) GetRedisJwt(username string) (errCode int, redisJw
 
 func (jwtService *JwtService) SetRedisJwt(jwt, username string) (errCode int) {
 	timer := time.Duration(utils.JwtExpireTime) * time.Second
-	err := global.GRedis.Set(context.Background(), username, jwt, timer).Err()
+	err := global.GRedisGroup[0].Set(context.Background(), username, jwt, timer).Err()
 	if err != nil {
 		return code.ErrorRedisSaveFailed
+	}
+	return code.SUCCESS
+}
+
+func (jwtService *JwtService) DelRedisJwt(username string) (errCode int) {
+	err := global.GRedisGroup[0].Del(context.Background(), username).Err()
+	if err != nil {
+		return code.ErrorRedisDeleteFailed
 	}
 	return code.SUCCESS
 }
