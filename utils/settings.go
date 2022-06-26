@@ -45,6 +45,9 @@ var (
 const (
 	IsLike = 0
 	UnLike = 1
+
+	// maximum number of database operations
+	Attempts = 3
 )
 
 var once sync.Once
