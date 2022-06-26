@@ -11,6 +11,4 @@ func main() {
 	defer db.Close()
 
 	defer global.GRabbitMQ.Close()
-
-	defer global.GRedis.Close()
 }
