@@ -45,6 +45,7 @@ func init() {
 		&models.Comment{},
 		&models.JwtBlacklist{},
 		&models.Image{},
+		&models.Like{},
 	)
 
 	sqlDB, _ := global.GDb.DB()
