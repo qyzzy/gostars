@@ -43,8 +43,9 @@ var (
 )
 
 const (
-	IsLike = 0
-	UnLike = 1
+	IsLike     = 0
+	UnLike     = 1
+	LikeAction = 1
 
 	// maximum number of database operations
 	Attempts = 3
