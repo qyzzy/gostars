@@ -12,10 +12,10 @@ import (
 
 var (
 	GDb                *gorm.DB
-	GRedis             *redis.Client
 	GRouter            *gin.Engine
 	GTimer             timer.Timer = timer.NewTimerTask()
 	GFileServerConnect *ssh.Client
 	GFtp               *goftp.FTP
 	GRabbitMQ          *amqp.Connection
+	GRedisGroup        []*redis.Client
 )
