@@ -1,9 +1,7 @@
 package admin
 
 import (
-	"context"
 	"github.com/gin-gonic/gin"
-	"gostars/global"
 	"gostars/models"
 	"gostars/utils/code"
 	"net/http"
@@ -32,14 +30,15 @@ func (jwtApi *JwtApi) AddBlackList(c *gin.Context) {
 			"status":  errCode,
 			"message": code.GetErrMsg(errCode),
 		})
+		return
 	}
-	err := global.GRedis.Del(context.Background(), username).Err()
-	if err != nil {
-		errCode = code.ErrorRedisDeleteFailed
+	errCode = adminJwtService.DelRedisJwt(username)
+	if errCode != code.SUCCESS {
 		c.JSON(http.StatusOK, gin.H{
 			"status":  errCode,
 			"message": code.GetErrMsg(errCode),
 		})
+		return
 	}
 
 	c.JSON(http.StatusOK, gin.H{
