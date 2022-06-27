@@ -21,10 +21,13 @@ func (s *UserRouterGroup) InitUserRouter(Router *gin.RouterGroup) {
 		userRouter.GET("articles", userApiGroup.GetArticles)
 		userRouter.GET("articles/title", userApiGroup.GetArticlesByTitle)
 		userRouter.GET("articles/:id/comments", userApiGroup.GetArticleComments)
+		userRouter.POST("articles/:id/favorite", userApiGroup.FavoriteAction)
 
+		// Category info module
 		userRouter.GET("categories", userApiGroup.GetArticles)
 		userRouter.GET("categories/:id/articles", userApiGroup.GetArticleByCategory)
 
+		// Comment info module
 		userRouter.POST("comments", userApiGroup.CreateComment)
 		userRouter.DELETE("comments/:id", userApiGroup.DeleteComment)
 	}
