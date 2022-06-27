@@ -1,15 +1,20 @@
 package service
 
 import (
+	"context"
 	"gostars/global"
 	"gostars/models"
 	"gostars/utils"
 	"gostars/utils/code"
+	"time"
 )
 
 type LikeService struct {
 }
 
+/**
+	MySQL Part
+**/
 func (likeService *LikeService) CreateLike(data *models.Like) int {
 	err := global.GDb.Table(models.LikeTableName()).
 		Create(&data).Error
@@ -66,4 +71,46 @@ func (likeService *LikeService) GetLikeArticleList(userID int) ([]int, int) {
 		return likeArticleList, code.ERROR
 	}
 	return likeArticleList, code.SUCCESS
+}
+
+/**
+	Redis Part
+**/
+func (likeService *LikeService) ExistsRedisLikeUserID(strUserID string) int {
+	res, err := global.GRedisGroup[1].Exists(context.Background(), strUserID).Result()
+	if err != nil {
+		return code.ERROR
+	}
+	if res == 0 {
+		return code.ErrorRedisKeyNotExist
+	}
+	return code.SUCCESS
+}
+
+func (likeService *LikeService) SAddRedisLikeUserID(strUserID string, articleID int) int {
+	_, err := global.GRedisGroup[1].SAdd(context.Background(), strUserID, articleID).Result()
+	if err != nil {
+		return code.ErrorRedisSaveFailed
+	}
+	return code.SUCCESS
+}
+
+func (likeService *LikeService) DelRedisLikeUserID(strUserID string) int {
+	err := global.GRedisGroup[1].Del(context.Background(), strUserID).Err()
+	if err != nil {
+		return code.ErrorRedisDeleteFailed
+	}
+	return code.SUCCESS
+}
+
+func (likeService *LikeService) ExpireRedisLikeUserID(strUserID string) int {
+	err := global.GRedisGroup[1].Expire(
+		context.Background(),
+		strUserID,
+		time.Duration(utils.Week)*time.Second,
+	)
+	if err != nil {
+		return code.ErrorRedisExpireFailed
+	}
+	return code.SUCCESS
 }
