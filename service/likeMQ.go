@@ -106,6 +106,7 @@ func (likeMQ *LikeMQ) consumerLikeAdd(messages <-chan amqp.Delivery) {
 		params := strings.Split(fmt.Sprintf("%s", d.Body), " ")
 		userID, _ := strconv.Atoi(params[0])
 		articleID, _ := strconv.Atoi(params[1])
+
 		for i := 0; i < utils.Attempts; i++ {
 			// default : no problem
 			flag := false
@@ -147,6 +148,7 @@ func (likeMQ *LikeMQ) consumerLikeDel(messages <-chan amqp.Delivery) {
 		params := strings.Split(fmt.Sprintf("%s", d.Body), " ")
 		userID, _ := strconv.Atoi(params[0])
 		articleID, _ := strconv.Atoi(params[1])
+
 		for i := 0; i < utils.Attempts; i++ {
 			flag := true
 			_, errCode := likeService.GetLikeInfo(articleID, userID)
