@@ -43,12 +43,19 @@ var (
 )
 
 const (
+	Day   = 60 * 60 * 24
+	Week  = Day * 7
+	Month = Day * 30
+
 	IsLike     = 0
 	UnLike     = 1
 	LikeAction = 1
 
 	// maximum number of database operations
 	Attempts = 3
+
+	// prevent dirty reads
+	DefaultRedisValue = -1
 )
 
 var once sync.Once
