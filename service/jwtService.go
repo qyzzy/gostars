@@ -14,6 +14,9 @@ import (
 type JwtService struct {
 }
 
+/**
+	MySQL Part
+**/
 func (jwtService *JwtService) AddJwtTokenToBlacklist(jwtList *models.JwtBlacklist) int {
 	err := global.GDb.Table(models.JwtBlacklistTableName()).
 		Create(&jwtList).Error
@@ -30,6 +33,9 @@ func (jwtService *JwtService) IsBlacklist(jwt string) bool {
 	return !isNotFound
 }
 
+/**
+	Redis Part
+**/
 func (jwtService *JwtService) GetRedisJwt(username string) (errCode int, redisJwt string) {
 	redisJwt, err := global.GRedisGroup[0].Get(context.Background(), username).Result()
 	if err != nil {
