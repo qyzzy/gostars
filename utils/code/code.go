@@ -27,6 +27,8 @@ const (
 	ErrorRedisGetFailed    = 6001
 	ErrorRedisSaveFailed   = 6002
 	ErrorRedisDeleteFailed = 6003
+	ErrorRedisKeyNotExist  = 6004
+	ErrorRedisExpireFailed = 6005
 
 	ErrorImageCreateFailed = 8001
 
@@ -50,6 +52,8 @@ var codeMsg = map[int]string{
 	ErrorRedisGetFailed:    "Redis get failed!",
 	ErrorRedisSaveFailed:   "Redis save failed!",
 	ErrorRedisDeleteFailed: "Redis delete failed!",
+	ErrorRedisKeyNotExist:  "Redis key not exist!",
+	ErrorRedisExpireFailed: "Redis expire key failed!",
 	ErrorTokenCreateFailed: "Token create failed!",
 	ErrorTokenInBlacklist:  "Token in blacklist!",
 	ErrorImageCreateFailed: "Image create failed",
