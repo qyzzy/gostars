@@ -4,6 +4,7 @@ import (
 	"gostars/global"
 	_ "gostars/initialize"
 	_ "gostars/routers"
+	_ "gostars/service"
 )
 
 func main() {
