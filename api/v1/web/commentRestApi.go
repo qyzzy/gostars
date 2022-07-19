@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"gostars/models"
 	"gostars/utils/code"
+	"gostars/utils/ipsource"
 	"net/http"
 	"strconv"
 )
@@ -11,6 +12,9 @@ import (
 func (commentApi *CommentApi) CreateComment(c *gin.Context) {
 	var data models.Comment
 	_ = c.ShouldBindJSON(&data)
+	articleID, _ := strconv.Atoi(c.Param("id"))
+	data.ArticleID = articleID
+	data.IPSource = ipsource.OnlineIpInfo(c.Request.RemoteAddr).Region
 
 	errCode := webCommentService.CreateComment(&data)
 	c.JSON(http.StatusOK, gin.H{
