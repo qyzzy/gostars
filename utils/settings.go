@@ -40,6 +40,8 @@ var (
 
 	ModelPath  string
 	PolicyPath string
+
+	WordDictPath string
 )
 
 const (
@@ -77,6 +79,7 @@ func Load() {
 	LoadQiNiu(file)
 	LoadRabbitMQ(file)
 	LoadCasbin(file)
+	LoadFilter(file)
 }
 
 func LoadServer(file *ini.File) {
@@ -125,4 +128,8 @@ func LoadRabbitMQ(file *ini.File) {
 func LoadCasbin(file *ini.File) {
 	ModelPath = file.Section("casbin").Key("ModelPath").MustString("")
 	PolicyPath = file.Section("casbin").Key("PolicyPath").MustString("")
+}
+
+func LoadFilter(file *ini.File) {
+	WordDictPath = file.Section("filter").Key("WordDictPath").MustString("")
 }

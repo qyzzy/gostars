@@ -19,3 +19,7 @@ func (likeArticleApi *LikeArticleApi) FavoriteAction(c *gin.Context) {
 		"message": code.GetErrMsg(errCode),
 	})
 }
+
+func (likeArticleApi *LikeArticleApi) GetFavoriteList(c *gin.Context) {
+
+}

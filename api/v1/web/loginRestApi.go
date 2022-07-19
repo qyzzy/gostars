@@ -46,12 +46,12 @@ func (userApi *UserApi) Login(c *gin.Context) {
 
 	if errCode == code.SUCCESS {
 		c.JSON(http.StatusOK, gin.H{
-			"status":  code.SUCCESS,
-			"data":    formData.Username,
-			"id":      formData.ID,
-			"role":    formData.Role,
-			"message": code.GetErrMsg(code.SUCCESS),
-			"token":   token,
+			"status":      code.SUCCESS,
+			"data":        formData.Username,
+			"id":          formData.ID,
+			"authorityID": formData.AuthorityID,
+			"message":     code.GetErrMsg(code.SUCCESS),
+			"token":       token,
 		})
 		return
 	}
