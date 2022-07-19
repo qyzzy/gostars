@@ -1,6 +1,8 @@
 package service
 
 import (
+	"gostars/global"
+	"gostars/models"
 	"gostars/utils"
 	"gostars/utils/code"
 	"strconv"
@@ -174,5 +176,10 @@ func (favoriteService *FavoriteService) FavoriteAction(userID, articleID, action
 }
 
 func (favoriteService *FavoriteService) GetFavoriteList(userID, curID int) {
+
+}
+
+func (favoriteService *FavoriteService) addFavoriteArticleList(articleID, curID int, favoriteArticleList *[]models.Article) {
+	defer global.GWG.Done()
 
 }
