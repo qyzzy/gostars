@@ -13,6 +13,7 @@ func (s *UserRouterGroup) InitUserRouter(Router *gin.RouterGroup) {
 		// User info module
 		userRouter.POST("users", userApiGroup.Register)
 		userRouter.GET("users/:id", userApiGroup.GetMe)
+		userRouter.GET("users/:id/favorite", userApiGroup.GetFavoriteList)
 
 		userRouter.POST("login", userApiGroup.Login)
 		userRouter.POST("loginfront", userApiGroup.LoginFront)
