@@ -5,9 +5,16 @@ import (
 	"gostars/models/common"
 	"io/ioutil"
 	"net/http"
+	"strings"
 )
 
 func OnlineIpInfo(ip string) *common.IPInfo {
+	if !isRemoteAddr(ip) {
+		return &common.IPInfo{
+			QueryIp: "localhost",
+			Region:  "local",
+		}
+	}
 	url := "http://ip-api.com/json/" + ip + "?lang=zh-CN"
 	resp, err := http.Get(url)
 	if err != nil {
@@ -24,4 +31,13 @@ func OnlineIpInfo(ip string) *common.IPInfo {
 		return nil
 	}
 	return &result
+}
+
+// todo
+func isRemoteAddr(ip string) bool {
+	tmp := strings.Split(ip, ".")
+	if len(tmp) != 4 {
+		return false
+	}
+	return true
 }
