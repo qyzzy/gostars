@@ -2,10 +2,25 @@ package models
 
 import "gorm.io/gorm"
 
-type NavMenu struct {
+type Level0NavMenu struct {
 	gorm.Model
-	Name           string `json:"name"`
-	CategoryLevel0 int    `json:"categoryLevel0"`
-	CategoryLevel1 int    `json:"categoryLevel1"`
-	Path           string `json:"path"`
+	Name     string `json:"name"`
+	Path     string `json:"path"`
+	IsFather bool   `json:"isFather"`
+}
+
+type Level1NavMenu struct {
+	gorm.Model
+	Name     string `json:"name"`
+	Path     string `json:"path"`
+	FatherID int    `json:"fatherID"`
+	IsFather bool   `json:"isFather"`
+}
+
+func Level0NavMenuTableName() string {
+	return "level0_nav_menus"
+}
+
+func Level1NavMenuTableName() string {
+	return "level1_nav_menus"
 }

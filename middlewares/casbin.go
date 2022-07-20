@@ -1,6 +1,7 @@
 package middlewares
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"gostars/service"
 	"gostars/utils"
@@ -18,14 +19,16 @@ func CasbinHandler() gin.HandlerFunc {
 		obj := c.Request.URL.RequestURI()
 		act := c.Request.Method
 		sub := c.Query("authorityid")
-		//fmt.Println(sub, obj, act)
+		fmt.Println(sub, obj, act)
 		e := casbinService.Casbin()
 		msg, _ := e.Enforce(sub, obj, act)
-		//fmt.Println(msg)
+		fmt.Println(msg)
 
 		// debug env
 		if msg || utils.AppMode == "debug" {
 			c.Next()
+			//if msg {
+			//	c.Next()
 		} else {
 			c.JSON(http.StatusOK, gin.H{
 				"status": code.ErrorUserNoRight,

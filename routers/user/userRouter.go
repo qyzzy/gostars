@@ -10,6 +10,9 @@ type UserRouterGroup struct {
 func (s *UserRouterGroup) InitUserRouter(Router *gin.RouterGroup) {
 	userRouter := Router.Group("")
 	{
+		userRouter.GET("level0navmenus", userApiGroup.GetLevel0NavMenus)
+		userRouter.GET("level1navmenus", userApiGroup.GetLevel1NavMenus)
+
 		// User info module
 		userRouter.POST("users", userApiGroup.Register)
 		userRouter.GET("users/:id", userApiGroup.GetMe)

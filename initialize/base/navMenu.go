@@ -10,18 +10,37 @@ var NavMenu = new(navMenu)
 
 type navMenu struct{}
 
-var navMenus = []models.NavMenu{
-	{Name: "Home", CategoryLevel0: 0, CategoryLevel1: 0, Path: "/api/v1/articles"},
-	{Name: "Blog", CategoryLevel0: 0, CategoryLevel1: 0, Path: "/api/v1/articles"},
-	{Name: "About", CategoryLevel0: 0, CategoryLevel1: 0, Path: "/api/v1/about"},
-	{Name: "NetHistory", CategoryLevel0: 103, CategoryLevel1: 0, Path: "/api/v1/history"},
-	{Name: "RSS", CategoryLevel0: 103, CategoryLevel1: 0, Path: "/api/v1/rss"},
+var level0NavMenus = []models.Level0NavMenu{
+	{Name: "Home", Path: "/api/v1/home", IsFather: false},
+	{Name: "Blog", Path: "/api/v1/articles", IsFather: false},
+	{Name: "About", Path: "/api/v1/about", IsFather: true},
 }
 
-func (a *navMenu) InitNavMenu() error {
-	_ = global.GDb.AutoMigrate(models.NavMenu{})
+var level1NavMenus = []models.Level1NavMenu{
+	{Name: "NetHistory", Path: "/api/v1/net/history", FatherID: 3, IsFather: false},
+	{Name: "RSS", Path: "/api/v1/rss", FatherID: 3, IsFather: false},
+}
+
+func (a *navMenu) InitLevel0NavMenu() error {
+	_ = global.GDb.AutoMigrate(models.Level0NavMenu{})
 	return global.GDb.Transaction(func(tx *gorm.DB) error {
-		if err := tx.Create(navMenus).Error; err != nil {
+		if tx.Find(&models.Level0NavMenu{}).RowsAffected == int64(len(level0NavMenus)) {
+			return nil
+		}
+		if err := tx.Create(level0NavMenus).Error; err != nil {
+			return err
+		}
+		return nil
+	})
+}
+
+func (a *navMenu) InitLevel1NavMenu() error {
+	_ = global.GDb.AutoMigrate(models.Level1NavMenu{})
+	return global.GDb.Transaction(func(tx *gorm.DB) error {
+		if tx.Find(&models.Level1NavMenu{}).RowsAffected == int64(len(level1NavMenus)) {
+			return nil
+		}
+		if err := tx.Create(level1NavMenus).Error; err != nil {
 			return err
 		}
 		return nil
