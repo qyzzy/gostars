@@ -13,8 +13,8 @@ var Authority = new(authority)
 type authority struct{}
 
 var authorities = []models.Authority{
-	{CreatedAt: time.Now(), UpdatedAt: time.Now(), AuthorityID: "888", AuthorityName: "admin"},
-	{CreatedAt: time.Now(), UpdatedAt: time.Now(), AuthorityID: "777", AuthorityName: "user"},
+	{CreatedAt: time.Now(), UpdatedAt: time.Now(), AuthorityID: 888, AuthorityName: "admin"},
+	{CreatedAt: time.Now(), UpdatedAt: time.Now(), AuthorityID: 777, AuthorityName: "user"},
 }
 
 func (a *authority) InitAuthority() error {

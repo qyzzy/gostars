@@ -6,7 +6,7 @@ type Authority struct {
 	CreatedAt     time.Time
 	UpdatedAt     time.Time
 	DeletedAt     *time.Time `gorm:"index"`
-	AuthorityID   string     `json:"authorityid" gorm:"not null;unique;primary_key;size:90"`
+	AuthorityID   int        `json:"authorityid" gorm:"not null;unique;primary_key"`
 	AuthorityName string     `json:"authorityname" gorm:""`
 }
 
