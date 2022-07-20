@@ -46,6 +46,7 @@ func init() {
 		&models.JwtBlacklist{},
 		&models.Image{},
 		&models.Like{},
+		&models.NavMenu{},
 	)
 
 	sqlDB, _ := global.GDb.DB()
@@ -58,4 +59,5 @@ func init() {
 
 	_ = base.Casbin.InitCasbinRule()
 	_ = base.Authority.InitAuthority()
+	_ = base.NavMenu.InitNavMenu()
 }
